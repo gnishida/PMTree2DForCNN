@@ -5,8 +5,12 @@
 #include <string>
 #include <vector>
 #include "Vertex.h"
+#include <opencv/cv.h>
+#include <opencv/highgui.h>
+#include <opencv2/imgproc/imgproc.hpp>
 
 class RenderManager;
+class Camera;
 
 namespace pmtree {
 	float shapeRatio(int shape, float ratio);
@@ -15,7 +19,7 @@ namespace pmtree {
 	public:
 		float baseFactor;			// この枝の根元部分の割合
 		float attenuationFactor;	// 親枝に対する長さの比率
-		float downAngle;
+		float downAngle;			// 親枝に対する、down角度
 		float curve;
 		float curveBack;
 		std::vector<float> curvesV;
@@ -33,7 +37,7 @@ namespace pmtree {
 	};
 
 	class PMTree2D {
-	private:
+	public:
 		boost::shared_ptr<TreeNode> root;
 
 	public:
@@ -41,6 +45,8 @@ namespace pmtree {
 
 		void generateRandom();
 		bool generateGeometry(RenderManager* renderManager);
+		void generateLocalTrainingData(const cv::Mat& image, Camera* camera, int screenWidth, int screenHeight, std::vector<cv::Mat>& localImages, std::vector<std::vector<float> >& parameters);
+		void generateLocalTrainingData(const glm::mat4& modelMat, float segment_length, boost::shared_ptr<TreeNode>& node, const cv::Mat& image, Camera* camera, int screenWidth, int screenHeight, std::vector<cv::Mat>& localImages, std::vector<std::vector<float> >& parameters);
 		std::string to_string();
 
 	private:

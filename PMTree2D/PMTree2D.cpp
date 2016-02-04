@@ -3,8 +3,7 @@
 #include <sstream>
 #include <iostream>
 #include "RenderManager.h"
-#include <opencv/cv.h>
-#include <opencv/highgui.h>
+#include "Camera.h"
 
 namespace pmtree {
 
@@ -216,6 +215,64 @@ namespace pmtree {
 		}
 
 		return underground;
+	}
+
+	void PMTree2D::generateLocalTrainingData(const cv::Mat& image, Camera* camera, int screenWidth, int screenHeight, std::vector<cv::Mat>& localImages, std::vector<std::vector<float> >& parameters) {
+		generateLocalTrainingData(glm::mat4(), 0.3f, root, image, camera, screenWidth, screenHeight, localImages, parameters);
+	}
+
+	void PMTree2D::generateLocalTrainingData(const glm::mat4& modelMat, float segment_length, boost::shared_ptr<TreeNode>& node, const cv::Mat& image, Camera* camera, int screenWidth, int screenHeight, std::vector<cv::Mat>& localImages, std::vector<std::vector<float> >& parameters) {
+		glm::mat4 mat = modelMat;
+
+		// current positionを計算
+		glm::vec4 p(0, 0, 0, 1);
+		p = mat * p;
+		p = camera->mvpMatrix * p;
+		glm::vec2 pp(p.x / p.w * screenWidth, screenHeight - p.y / p.w * screenHeight);
+
+		// matから、回転角度を抽出
+		float theta = asinf(mat[0][1]);
+
+		// 画像を回転してcropping
+		cv::Mat localImage;
+		cv::Mat affineMatrix = cv::getRotationMatrix2D(cv::Point2d(pp.x, pp.y), -theta / M_PI * 180, 1.0);
+		cv::warpAffine(image, localImage, affineMatrix, image.size());
+		localImages.push_back(localImage);
+
+		// パラメータを格納
+		std::vector<float> params;
+		params.push_back(node->baseFactor);
+		params.push_back(node->attenuationFactor);
+		params.push_back(node->downAngle);
+		params.push_back(node->curve);
+		params.push_back(node->curveBack);
+		for (int k = 0; k < node->curvesV.size(); ++k) {
+			params.push_back(node->curvesV[k]);
+		}
+		for (int k = 0; k < node->branching.size(); ++k) {
+			params.push_back(node->branching[k]);
+		}
+		parameters.push_back(params);
+
+		// 子ノードの枝へ、再起処理
+		for (int k = 0; k < NUM_SEGMENTS; ++k) {
+			// 最後のsegmentなら、終了
+			if (k >= NUM_SEGMENTS - 1) break;
+
+			mat = glm::translate(mat, glm::vec3(0, segment_length, 0));
+
+			if (node->branching[k] == 1) {
+				generateLocalTrainingData(mat, segment_length * node->children[k]->attenuationFactor, node->children[k], image, camera, screenWidth, screenHeight, localImages, parameters);
+			}
+
+			if (k < NUM_SEGMENTS / 2) {
+				mat = glm::rotate(mat, (node->curve / NUM_SEGMENTS + node->curvesV[k]) / 180.0f * M_PI, glm::vec3(0, 0, 1));
+			}
+			else {
+				mat = glm::rotate(mat, (node->curveBack / NUM_SEGMENTS + node->curvesV[k]) / 180.0f * M_PI, glm::vec3(0, 0, 1));
+			}
+
+		}
 	}
 
 	std::string PMTree2D::to_string() {

@@ -29,6 +29,7 @@ public:
     QAction *actionExit;
     QAction *actionRandomGeneration;
     QAction *actionGenerateTrainingData;
+    QAction *actionGenerateLocalTrainingData;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
@@ -47,6 +48,8 @@ public:
         actionRandomGeneration->setObjectName(QStringLiteral("actionRandomGeneration"));
         actionGenerateTrainingData = new QAction(MainWindowClass);
         actionGenerateTrainingData->setObjectName(QStringLiteral("actionGenerateTrainingData"));
+        actionGenerateLocalTrainingData = new QAction(MainWindowClass);
+        actionGenerateLocalTrainingData->setObjectName(QStringLiteral("actionGenerateLocalTrainingData"));
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         MainWindowClass->setCentralWidget(centralWidget);
@@ -71,6 +74,7 @@ public:
         menuPM->addAction(actionRandomGeneration);
         menuPM->addSeparator();
         menuPM->addAction(actionGenerateTrainingData);
+        menuPM->addAction(actionGenerateLocalTrainingData);
 
         retranslateUi(MainWindowClass);
 
@@ -84,6 +88,7 @@ public:
         actionRandomGeneration->setText(QApplication::translate("MainWindowClass", "Random Generation", 0));
         actionRandomGeneration->setShortcut(QApplication::translate("MainWindowClass", "Ctrl+G", 0));
         actionGenerateTrainingData->setText(QApplication::translate("MainWindowClass", "Generate Training Data", 0));
+        actionGenerateLocalTrainingData->setText(QApplication::translate("MainWindowClass", "Generate Local Training Data", 0));
         menuFile->setTitle(QApplication::translate("MainWindowClass", "File", 0));
         menuPM->setTitle(QApplication::translate("MainWindowClass", "PM", 0));
     } // retranslateUi

@@ -36,6 +36,7 @@
     <addaction name="actionRandomGeneration"/>
     <addaction name="separator"/>
     <addaction name="actionGenerateTrainingData"/>
+    <addaction name="actionGenerateLocalTrainingData"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuPM"/>
@@ -65,6 +66,11 @@
   <action name="actionGenerateTrainingData">
    <property name="text">
     <string>Generate Training Data</string>
+   </property>
+  </action>
+  <action name="actionGenerateLocalTrainingData">
+   <property name="text">
+    <string>Generate Local Training Data</string>
    </property>
   </action>
  </widget>
