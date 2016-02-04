@@ -70,6 +70,7 @@ namespace pmtree {
 
 		downAngle = 0.0f;
 		curve = 0.0f;
+		curveBack = 0.0f;
 		for (int k = 0; k < NUM_SEGMENTS - 1; ++k) {
 			curvesV.push_back(0);
 		}

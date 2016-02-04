@@ -31,16 +31,16 @@ GLWidget3D::GLWidget3D(MainWindow* mainWin) : QGLWidget(QGLFormat(QGL::SampleBuf
 void GLWidget3D::generateTrainingData() {
 	srand(0);
 
-	QString resultDir = "results/";
+	QString resultDir = "C:\\Anaconda\\caffe\\data\\pmtree2d\\pmtree2d\\";
 
 	if (QDir(resultDir).exists()) {
 		QDir(resultDir).removeRecursively();
 	}
 	QDir().mkpath(resultDir);
 
-	QFile file("results/parameters.txt");
+	QFile file("C:\\Anaconda\\caffe\\data\\pmtree2d\\pmtree2d\\parameters.txt");
 	if (!file.open(QIODevice::WriteOnly)) {
-		QMessageBox::warning(this, "Warning", "results/parameter file cannot be accessed.");
+		QMessageBox::warning(this, "Warning", "Output directory is not accessible.");
 
 		return;
 	}
