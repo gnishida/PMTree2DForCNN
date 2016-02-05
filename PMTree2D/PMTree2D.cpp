@@ -279,8 +279,6 @@ namespace pmtree {
 		std::stringstream ss;
 		bool first_node = true;
 
-		cv::Mat data(62, 111, CV_32F, cv::Scalar(0));
-
 		std::list<boost::shared_ptr<TreeNode> > queue;
 		queue.push_back(root);
 
