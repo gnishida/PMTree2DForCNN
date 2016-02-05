@@ -5,9 +5,7 @@
 #include <string>
 #include <vector>
 #include "Vertex.h"
-#include <opencv/cv.h>
-#include <opencv/highgui.h>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/opencv.hpp>
 
 class RenderManager;
 class Camera;
