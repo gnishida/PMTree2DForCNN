@@ -68,6 +68,8 @@ void GLWidget3D::generateTrainingData() {
 		cv::threshold(grayImage, grayImage, 100, 255, CV_THRESH_BINARY);
 		cv::resize(grayImage, grayImage, cv::Size(256, 256));
 		cv::threshold(grayImage, grayImage, 100, 255, CV_THRESH_BINARY);
+		cv::resize(grayImage, grayImage, cv::Size(128, 128));
+		cv::threshold(grayImage, grayImage, 100, 255, CV_THRESH_BINARY);
 
 		// write the iamge to file
 		QString filename = resultDir + QString("image_%1.png").arg(n, 6, 10, QChar('0'));
