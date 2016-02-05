@@ -228,7 +228,7 @@ namespace pmtree {
 		glm::vec4 p(0, 0, 0, 1);
 		p = mat * p;
 		p = camera->mvpMatrix * p;
-		glm::vec2 pp(p.x / p.w * screenWidth, screenHeight - p.y / p.w * screenHeight);
+		glm::vec2 pp((p.x / p.w + 1.0f) * 0.5f * screenWidth, screenHeight - (p.y / p.w + 1.0f) * 0.5f * screenHeight);
 
 		// matから、回転角度を抽出
 		float theta = asinf(mat[0][1]);
