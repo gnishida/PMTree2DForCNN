@@ -222,6 +222,9 @@ namespace pmtree {
 	}
 
 	void PMTree2D::generateLocalTrainingData(const glm::mat4& modelMat, float segment_length, boost::shared_ptr<TreeNode>& node, const cv::Mat& image, Camera* camera, int screenWidth, int screenHeight, std::vector<cv::Mat>& localImages, std::vector<std::vector<float> >& parameters) {
+		cv::imwrite("original_image.jpg", image);
+
+
 		glm::mat4 mat = modelMat;
 
 		// current positionを計算
@@ -238,6 +241,8 @@ namespace pmtree {
 		cv::Mat affineMatrix = cv::getRotationMatrix2D(cv::Point2d(pp.x, pp.y), -theta / M_PI * 180, 1.0);
 		cv::warpAffine(image, localImage, affineMatrix, image.size());
 		localImages.push_back(localImage);
+
+		cv::imwrite("local_image.jpg", localImage);
 
 		// パラメータを格納
 		std::vector<float> params;

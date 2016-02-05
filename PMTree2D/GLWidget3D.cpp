@@ -118,6 +118,9 @@ void GLWidget3D::generateLocalTrainingData() {
 		cv::Mat grayImage;
 		cv::cvtColor(sourceImage, grayImage, CV_RGB2GRAY);
 
+		// 白黒画像に変換
+		cv::threshold(grayImage, grayImage, 100, 255, CV_THRESH_BINARY);
+
 		// derivation木の各ノードについて、学習データを作成する
 		std::vector<cv::Mat> localImages;
 		std::vector<std::vector<float> > parameters;
