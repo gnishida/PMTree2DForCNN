@@ -9,7 +9,7 @@ namespace pmtree {
 
 	const float M_PI = 3.1415926535f;
 	const int NUM_SEGMENTS = 30;
-	const int NUM_LEVELS = 2;
+	const int NUM_LEVELS = 1;
 
 	/**
 	* Shape ratioを返却する。
