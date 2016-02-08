@@ -32,6 +32,7 @@ namespace pmtree {
 		TreeNode(boost::shared_ptr<TreeNode> parent, int level, int index);
 		void generateRandom();
 		std::string to_string();
+		void recover(const std::vector<float>& params);
 	};
 
 	class PMTree2D {
@@ -46,6 +47,7 @@ namespace pmtree {
 		void generateLocalTrainingData(const cv::Mat& image, Camera* camera, int screenWidth, int screenHeight, std::vector<cv::Mat>& localImages, std::vector<std::vector<float> >& parameters);
 		void generateLocalTrainingData(const glm::mat4& modelMat, float segment_length, boost::shared_ptr<TreeNode>& node, const cv::Mat& image, Camera* camera, int screenWidth, int screenHeight, std::vector<cv::Mat>& localImages, std::vector<std::vector<float> >& parameters);
 		std::string to_string();
+		void recover(const std::vector<std::vector<float> >& params);
 
 	private:
 		bool generateGeometry(RenderManager* renderManager, const glm::mat4& modelMat, float segment_length, float segment_width, boost::shared_ptr<TreeNode>& node, std::vector<Vertex>& vertices);

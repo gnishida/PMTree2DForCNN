@@ -116,8 +116,34 @@ namespace pmtree {
 
 	std::string TreeNode::to_string() {
 		std::stringstream ss;
-		ss << "Level: " << level << ", Index: " << index;
+		
+		ss << baseFactor << "," << attenuationFactor << "," << (downAngle + 90) / 180.0f << "," << (curve + 90) / 180.0f << "," << (curveBack + 90) / 180.0f;
+		for (int i = 0; i < curvesV.size(); ++i) {
+			ss << "," << (curvesV[i] + 5) / 10.0f;
+		}
+		for (int i = 0; i < branching.size(); ++i) {
+			ss << "," << branching[i];
+		}
+
 		return ss.str();
+	}
+
+	void TreeNode::recover(const std::vector<float>& params) {
+		baseFactor = params[0];
+		attenuationFactor = params[1];
+		downAngle = params[2] * 180.0f - 90.0f;
+		curve = params[3] * 180.0f - 90.0f;
+		curveBack = params[4] * 180.0f - 90.0f;
+
+		curvesV.resize(NUM_SEGMENTS - 1);
+		for (int k = 0; k < NUM_SEGMENTS - 1; ++k) {
+			curvesV[k] = params[5 + k] * 10.0f - 5.0f;
+		}
+
+		branching.resize(NUM_SEGMENTS - 1);
+		for (int k = 0; k < NUM_SEGMENTS - 1; ++k) {
+			branching[k] = params[5 + NUM_SEGMENTS - 1 + k];
+		}
 	}
 
 	PMTree2D::PMTree2D() {
@@ -298,13 +324,7 @@ namespace pmtree {
 				ss << ",";
 			}
 			
-			ss << node->baseFactor << "," << node->attenuationFactor << "," << (node->downAngle + 90) / 180.0f << "," << (node->curve + 90) / 180.0f << "," << (node->curveBack + 90) / 180.0f;
-			for (int i = 0; i < node->curvesV.size(); ++i) {
-				ss << "," << (node->curvesV[i] + 5) / 10.0f;
-			}
-			for (int i = 0; i < node->branching.size(); ++i) {
-				ss << "," << node->branching[i];
-			}
+			ss << node->to_string();
 
 			for (int i = 0; i < node->children.size(); ++i) {
 				queue.push_back(node->children[i]);
@@ -312,6 +332,27 @@ namespace pmtree {
 		}
 
 		return ss.str();
+	}
+
+	void PMTree2D::recover(const std::vector<std::vector<float> >& params) {
+		root = boost::shared_ptr<TreeNode>(new TreeNode(NULL, 0, 0));
+		std::list<boost::shared_ptr<TreeNode> > queue;
+		queue.push_back(root);
+
+		int count = 0;
+		while (!queue.empty()) {
+			boost::shared_ptr<TreeNode> node = queue.front();
+			queue.pop_front();
+
+			node->recover(params[count++]);
+			if (node->level < NUM_LEVELS - 1) {
+				for (int k = 0; k < node->branching.size(); ++k) {
+					boost::shared_ptr<TreeNode> child = boost::shared_ptr<TreeNode>(new TreeNode(node, node->level + 1, k));
+					node->children.push_back(child);
+					queue.push_back(child);
+				}
+			}
+		}
 	}
 
 }
