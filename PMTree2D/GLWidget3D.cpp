@@ -83,6 +83,61 @@ void GLWidget3D::generateTrainingData() {
 	file.close();
 }
 
+void GLWidget3D::generateTrainingDataTrunk() {
+	srand(0);
+
+	QString resultDir = "C:\\Anaconda\\caffe\\data\\pmtree2dtrunk\\pmtree2dtrunk\\";
+
+	if (QDir(resultDir).exists()) {
+		QDir(resultDir).removeRecursively();
+	}
+	QDir().mkpath(resultDir);
+
+	QFile file("C:\\Anaconda\\caffe\\data\\pmtree2dtrunk\\pmtree2dtrunk\\parameters.txt");
+	if (!file.open(QIODevice::WriteOnly)) {
+		QMessageBox::warning(this, "Warning", "Output directory is not accessible.");
+
+		return;
+	}
+
+	QTextStream out(&file);
+
+	for (int n = 0; n < 10000; ++n) {
+		// 枝が地面にぶつからないよう、ランダムに生成
+		while (true) {
+			renderManager.removeObjects();
+			tree.generateRandom();
+			if (!tree.generateGeometry(&renderManager)) break;
+		}
+
+		// render the tree
+		render();
+
+		QImage img = grabFrameBuffer();
+		cv::Mat sourceImage(img.height(), img.width(), CV_8UC4, img.bits(), img.bytesPerLine());
+		cv::Mat grayImage;
+		cv::cvtColor(sourceImage, grayImage, CV_RGB2GRAY);
+
+		// 画像を縮小
+		cv::resize(grayImage, grayImage, cv::Size(512, 512));
+		cv::threshold(grayImage, grayImage, 200, 255, CV_THRESH_BINARY);
+		cv::resize(grayImage, grayImage, cv::Size(256, 256));
+		cv::threshold(grayImage, grayImage, 200, 255, CV_THRESH_BINARY);
+		cv::resize(grayImage, grayImage, cv::Size(128, 128));
+		cv::threshold(grayImage, grayImage, 200, 255, CV_THRESH_BINARY);
+
+		// write the iamge to file
+		QString filename = resultDir + QString("image_%1.png").arg(n, 6, 10, QChar('0'));
+
+		cv::imwrite(filename.toUtf8().constData(), grayImage);
+
+		out << tree.to_string(1).c_str() << "\n";
+	}
+
+	out.flush();
+	file.close();
+}
+
 void GLWidget3D::generateLocalTrainingData() {
 	srand(0);
 

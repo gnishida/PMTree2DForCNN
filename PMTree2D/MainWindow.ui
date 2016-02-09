@@ -36,6 +36,7 @@
     <addaction name="actionRandomGeneration"/>
     <addaction name="separator"/>
     <addaction name="actionGenerateTrainingData"/>
+    <addaction name="actionGenerateTrainingDataTrunk"/>
     <addaction name="actionGenerateLocalTrainingData"/>
     <addaction name="separator"/>
     <addaction name="actionGeneratePredictedData"/>
@@ -78,6 +79,11 @@
   <action name="actionGeneratePredictedData">
    <property name="text">
     <string>Generate Predicted Data</string>
+   </property>
+  </action>
+  <action name="actionGenerateTrainingDataTrunk">
+   <property name="text">
+    <string>Generate Training Data (Trunk)</string>
    </property>
   </action>
  </widget>

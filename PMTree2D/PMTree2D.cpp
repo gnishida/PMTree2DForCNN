@@ -334,6 +334,38 @@ namespace pmtree {
 		return ss.str();
 	}
 
+	std::string PMTree2D::to_string(int index) {
+		std::stringstream ss;
+		bool first_node = true;
+
+		std::list<boost::shared_ptr<TreeNode> > queue;
+		queue.push_back(root);
+
+		int count = 0;
+		while (!queue.empty()) {
+			boost::shared_ptr<TreeNode> node = queue.front();
+			queue.pop_front();
+
+			if (first_node) {
+				first_node = false;
+			}
+			else {
+				ss << ",";
+			}
+
+			ss << node->to_string();
+
+			for (int i = 0; i < node->children.size(); ++i) {
+				queue.push_back(node->children[i]);
+			}
+
+			count++;
+			if (count >= index) break;
+		}
+
+		return ss.str();
+	}
+
 	void PMTree2D::recover(const std::vector<std::vector<float> >& params) {
 		root = boost::shared_ptr<TreeNode>(new TreeNode(NULL, 0, 0));
 		std::list<boost::shared_ptr<TreeNode> > queue;

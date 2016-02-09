@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(close()));
 	connect(ui.actionRandomGeneration, SIGNAL(triggered()), this, SLOT(onRandomGeneration()));
 	connect(ui.actionGenerateTrainingData, SIGNAL(triggered()), this, SLOT(onGenerateTrainingData()));
+	connect(ui.actionGenerateTrainingDataTrunk, SIGNAL(triggered()), this, SLOT(onGenerateTrainingDataTrunk()));
 	connect(ui.actionGenerateLocalTrainingData, SIGNAL(triggered()), this, SLOT(onGenerateLocalTrainingData()));
 	connect(ui.actionGeneratePredictedData, SIGNAL(triggered()), this, SLOT(onGeneratePredictedData()));
 
@@ -32,6 +33,10 @@ void MainWindow::onRandomGeneration() {
 
 void MainWindow::onGenerateTrainingData() {
 	glWidget->generateTrainingData();
+}
+
+void MainWindow::onGenerateTrainingDataTrunk() {
+	glWidget->generateTrainingDataTrunk();
 }
 
 void MainWindow::onGenerateLocalTrainingData() {
