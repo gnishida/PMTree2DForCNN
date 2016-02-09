@@ -40,6 +40,7 @@
     <addaction name="actionGenerateLocalTrainingData"/>
     <addaction name="separator"/>
     <addaction name="actionGeneratePredictedData"/>
+    <addaction name="actionGeneratePredictedDataTrunk"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuPM"/>
@@ -84,6 +85,11 @@
   <action name="actionGenerateTrainingDataTrunk">
    <property name="text">
     <string>Generate Training Data (Trunk)</string>
+   </property>
+  </action>
+  <action name="actionGeneratePredictedDataTrunk">
+   <property name="text">
+    <string>Generate Predicted Data (Trunk)</string>
    </property>
   </action>
  </widget>

@@ -49,6 +49,7 @@ namespace pmtree {
 		std::string to_string();
 		std::string to_string(int index);
 		void recover(const std::vector<std::vector<float> >& params);
+		void recover(const std::vector<std::vector<float> >& params, int levels);
 
 	private:
 		bool generateGeometry(RenderManager* renderManager, const glm::mat4& modelMat, float segment_length, float segment_width, boost::shared_ptr<TreeNode>& node, std::vector<Vertex>& vertices);

@@ -31,6 +31,7 @@ public:
 	void generateTrainingDataTrunk();
 	void generateLocalTrainingData();
 	void generatePredictedData();
+	void generatePredictedDataTrunk();
 	void render();
 	void drawScene();
 

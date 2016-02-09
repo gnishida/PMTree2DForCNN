@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	connect(ui.actionGenerateTrainingDataTrunk, SIGNAL(triggered()), this, SLOT(onGenerateTrainingDataTrunk()));
 	connect(ui.actionGenerateLocalTrainingData, SIGNAL(triggered()), this, SLOT(onGenerateLocalTrainingData()));
 	connect(ui.actionGeneratePredictedData, SIGNAL(triggered()), this, SLOT(onGeneratePredictedData()));
+	connect(ui.actionGeneratePredictedDataTrunk, SIGNAL(triggered()), this, SLOT(onGeneratePredictedDataTrunk()));
 
 	// setup layouts
 	glWidget = new GLWidget3D(this);
@@ -45,4 +46,8 @@ void MainWindow::onGenerateLocalTrainingData() {
 
 void MainWindow::onGeneratePredictedData() {
 	glWidget->generatePredictedData();
+}
+
+void MainWindow::onGeneratePredictedDataTrunk() {
+	glWidget->generatePredictedDataTrunk();
 }

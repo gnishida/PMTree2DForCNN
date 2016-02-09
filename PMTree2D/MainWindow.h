@@ -25,6 +25,7 @@ public slots:
 	void onGenerateTrainingDataTrunk();
 	void onGenerateLocalTrainingData();
 	void onGeneratePredictedData();
+	void onGeneratePredictedDataTrunk();
 };
 
 #endif // MAINWINDOW_H

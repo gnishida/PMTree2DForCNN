@@ -228,7 +228,7 @@ namespace pmtree {
 
 			mat = glm::translate(mat, glm::vec3(0, segment_length, 0));
 
-			if (node->branching[k] == 1) {
+			if (node->branching[k] == 1 && k < node->children.size()) {
 				generateGeometry(renderManager, mat, segment_length * node->children[k]->attenuationFactor, w1 * node->children[k]->attenuationFactor, node->children[k], vertices);
 			}
 
@@ -378,6 +378,27 @@ namespace pmtree {
 
 			node->recover(params[count++]);
 			if (node->level < NUM_LEVELS - 1) {
+				for (int k = 0; k < node->branching.size(); ++k) {
+					boost::shared_ptr<TreeNode> child = boost::shared_ptr<TreeNode>(new TreeNode(node, node->level + 1, k));
+					node->children.push_back(child);
+					queue.push_back(child);
+				}
+			}
+		}
+	}
+
+	void PMTree2D::recover(const std::vector<std::vector<float> >& params, int levels) {
+		root = boost::shared_ptr<TreeNode>(new TreeNode(NULL, 0, 0));
+		std::list<boost::shared_ptr<TreeNode> > queue;
+		queue.push_back(root);
+
+		int count = 0;
+		while (!queue.empty()) {
+			boost::shared_ptr<TreeNode> node = queue.front();
+			queue.pop_front();
+
+			node->recover(params[count++]);
+			if (node->level < levels - 1) {
 				for (int k = 0; k < node->branching.size(); ++k) {
 					boost::shared_ptr<TreeNode> child = boost::shared_ptr<TreeNode>(new TreeNode(node, node->level + 1, k));
 					node->children.push_back(child);
